@@ -1,19 +1,28 @@
-// App.tsx
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ToastAndroid, Platform, Alert } from 'react-native';
 import WeatherInfo from './WeatherInfo';
-import { fetchWeatherData } from '../services/WeatherAPI';
+import { fetchWeatherData, checkDangerousWeather } from '../services/WeatherAPI';
+
+// Định nghĩa kiểu dữ liệu cho weather
+interface Weather {
+  weather: { icon: string; description: string; main: string }[];
+  main: { temp: number; feels_like: number; humidity: number };
+  wind: { speed: number; deg: number };
+  name: string;
+  cod: number;
+  rain?: { '1h'?: number };
+}
 
 export default function App() {
   const [city, setCity] = useState('');
-  const [weather, setWeather] = useState({});
+  const [weather, setWeather] = useState<Weather | null>(null); // Sử dụng kiểu Weather hoặc null
   const [errorMessage, setErrorMessage] = useState('');
 
-  const icon = weather.weather ? weather.weather[0].icon : '';
+  const icon = weather?.weather ? weather.weather[0].icon : '';
   const iconURL = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
   const translateWeatherDescription = (description: string) => {
-    const translations = {
+    const translations: Record<string, string> = {
       "clear sky": "trời quang đãng",
       "few clouds": "ít mây",
       "scattered clouds": "mây rải rác",
@@ -27,6 +36,32 @@ export default function App() {
     };
 
     return translations[description] || description;
+  };
+
+  // Hàm hiển thị Toast message
+  const showToast = (message: string) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.showWithGravity(
+        message,
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER
+      );
+    } else {
+      // Đối với iOS, sử dụng Alert thay vì Toast
+      Alert.alert('Cảnh báo thời tiết', message);
+    }
+  };
+
+  // Kiểm tra và hiển thị cảnh báo thời tiết
+  const checkWeatherWarnings = () => {
+    if (weather) {
+      const warnings = checkDangerousWeather(weather);
+      if (warnings.length > 0) {
+        warnings.forEach(warning => {
+          showToast(warning);
+        });
+      }
+    }
   };
 
   const goiAPIThoiTiet = () => {
@@ -43,7 +78,7 @@ export default function App() {
 
   const resetDuLieu = () => {
     setCity('');
-    setWeather({});
+    setWeather(null); // Đặt lại weather về null
     setErrorMessage('');
   };
 
@@ -64,8 +99,13 @@ export default function App() {
       {errorMessage ? (
         <Text style={styles.error}>{errorMessage}</Text>
       ) : null}
-      {weather.cod === 200 && (
-        <WeatherInfo weather={weather} iconURL={iconURL} translateWeatherDescription={translateWeatherDescription} />
+      {weather?.cod === 200 && (
+        <WeatherInfo 
+          weather={weather} 
+          iconURL={iconURL} 
+          translateWeatherDescription={translateWeatherDescription}
+          checkWeatherWarnings={checkWeatherWarnings}
+        />
       )}
     </View>
   );

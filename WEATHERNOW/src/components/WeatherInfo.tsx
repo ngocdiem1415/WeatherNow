@@ -2,12 +2,25 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
 interface WeatherInfoProps {
-  weather: any;
+  weather: {
+    weather: { icon: string; description: string; main: string }[];
+    main: { temp: number; feels_like: number; humidity: number };
+    wind: { speed: number; deg: number };
+    name: string;
+    cod: number;
+    rain?: { '1h'?: number };
+  };
   iconURL: string;
   translateWeatherDescription: (description: string) => string;
+  checkWeatherWarnings: () => void;
 }
 
-const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription }) => {
+const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription, checkWeatherWarnings }) => {
+  React.useEffect(() => {
+    // Gọi hàm kiểm tra cảnh báo ngay khi component được render
+    checkWeatherWarnings();
+  }, [weather]);
+
   return (
     <View style={styles.weatherInfo}>
       <Text style={styles.cityName}>Tên thành phố: {weather.name}</Text>
