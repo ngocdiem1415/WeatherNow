@@ -3,6 +3,17 @@ import { StyleSheet, Text, View, TextInput, Button, ToastAndroid, Platform, Aler
 import WeatherInfo from './WeatherInfo';
 import { fetchWeatherData, checkDangerousWeather } from '../services/WeatherAPI';
 
+/* test
+Nhiệt độ cao	Delhi, Riyadh, Baghdad, Phú Quốc (trưa)	
+Nhiệt độ thấp	Moscow, Reykjavik, Toronto, Ulaanbaatar	
+Gió mạnh	Chicago, Wellington, Punta Arenas	
+Độ ẩm cao	Singapore, Hồ Chí Minh, Jakarta, Bangkok	
+Độ ẩm thấp	Phoenix, Las Vegas, Lima, Cairo	
+Thunderstorm	Bangkok, Manila, Kuala Lumpur	
+Smoke/Haze	Hà Nội, Jakarta, Delhi	
+Mưa lớn	Mumbai, Kolkata, Hà Nội, Đà Nẵng	
+*/
+
 // Định nghĩa kiểu dữ liệu cho weather
 interface Weather {
   weather: { icon: string; description: string; main: string }[];
@@ -17,6 +28,8 @@ export default function App() {
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState<Weather | null>(null); // Sử dụng kiểu Weather hoặc null
   const [errorMessage, setErrorMessage] = useState('');
+  const [warnings, setWarnings] = useState<string[]>([]);
+
 
   const icon = weather?.weather ? weather.weather[0].icon : '';
   const iconURL = `https://openweathermap.org/img/wn/${icon}@2x.png`;
@@ -38,7 +51,7 @@ export default function App() {
     return translations[description] || description;
   };
 
-  // Hàm hiển thị Toast message
+  //4.5: Nếu phát hiện điều kiện nguy hiểm, hiển thị cảnh báo trên giao diện 
   const showToast = (message: string) => {
     if (Platform.OS === 'android') {
       ToastAndroid.showWithGravity(
@@ -53,14 +66,13 @@ export default function App() {
   };
 
   // Kiểm tra và hiển thị cảnh báo thời tiết
-  const checkWeatherWarnings = () => {
-    if (weather) {
-      const warnings = checkDangerousWeather(weather);
-      if (warnings.length > 0) {
-        warnings.forEach(warning => {
-          showToast(warning);
-        });
-      }
+  const checkWeatherWarnings = (data: Weather) => {
+  const result = checkDangerousWeather(data);
+  setWarnings(result); // Cập nhật danh sách cảnh báo để hiển thị
+  if (result.length > 0) {
+    result.forEach(warning => {
+      showToast(warning);
+      });
     }
   };
 
@@ -70,6 +82,7 @@ export default function App() {
         setWeather(data);
         setCity('');
         setErrorMessage('');
+        checkWeatherWarnings(data);
       })
       .catch(err => {
         setErrorMessage("Đã xảy ra lỗi! Vui lòng thử lại.");
@@ -82,6 +95,7 @@ export default function App() {
     setErrorMessage('');
   };
 
+  // 4.1: Người dùng nhập tên thành phố và nhấn nút “XEM”.
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ứng dụng Thời tiết!</Text>
@@ -104,7 +118,7 @@ export default function App() {
           weather={weather} 
           iconURL={iconURL} 
           translateWeatherDescription={translateWeatherDescription}
-          checkWeatherWarnings={checkWeatherWarnings}
+          warnings={warnings}
         />
       )}
     </View>

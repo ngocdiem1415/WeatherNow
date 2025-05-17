@@ -12,15 +12,13 @@ interface WeatherInfoProps {
   };
   iconURL: string;
   translateWeatherDescription: (description: string) => string;
-  checkWeatherWarnings: () => void;
+  warnings: string[];
 }
 
-const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription, checkWeatherWarnings }) => {
-  React.useEffect(() => {
-    // Gọi hàm kiểm tra cảnh báo ngay khi component được render
-    checkWeatherWarnings();
-  }, [weather]);
-
+//4.3: API trả về dữ liệu thời tiết, bao gồm nhiệt độ, tốc độ gió, lượng mưa, và mô tả thời tiết.
+const WeatherInfo: React.FC<WeatherInfoProps> = ({
+  weather, iconURL, translateWeatherDescription, warnings
+}) => {
   return (
     <View style={styles.weatherInfo}>
       <Text style={styles.cityName}>Tên thành phố: {weather.name}</Text>
@@ -31,6 +29,15 @@ const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWe
       <Text>Tốc độ gió: {weather.wind.speed} km/h</Text>
       <Text>Hướng gió: {weather.wind.deg} độ</Text>
       <Text>Mô tả thời tiết: {translateWeatherDescription(weather.weather[0].description)}</Text>
+
+      {/* Hiển thị cảnh báo */}
+      {warnings.length > 0 && (
+        <View style={styles.warningBox}>
+          {warnings.map((warn, index) => (
+            <Text key={index} style={styles.warningText}>⚠️ {warn}</Text>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -51,6 +58,17 @@ const styles = StyleSheet.create({
   icon: {
     width: 100,
     height: 100,
+  },
+    warningBox: {
+    backgroundColor: '#FFF3CD',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 15,
+    width: '100%',
+  },
+  warningText: {
+    color: '#856404',
+    fontWeight: 'bold',
   },
 });
 

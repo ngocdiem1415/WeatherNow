@@ -27,17 +27,7 @@ const DANGEROUS_WEATHER_THRESHOLDS = {
   dangerousConditions: ['thunderstorm', 'tornado', 'hurricane', 'smoke', 'haze']
 };
 
-// Interface định nghĩa kiểu dữ liệu Weather
-interface WeatherData {
-  weather: { icon: string; description: string; main: string }[];
-  main: { temp: number; feels_like: number; humidity: number };
-  wind: { speed: number; deg: number };
-  name: string;
-  cod: number;
-  rain?: { '1h'?: number };
-}
-
-// Kiểm tra thời tiết nguy hiểm
+//4.4: Ứng dụng so sánh dữ liệu với các ngưỡng nguy hiểm được định nghĩa 
 export const checkDangerousWeather = (weatherData: WeatherData) => {
   const warnings = [];
   
@@ -77,6 +67,7 @@ export const checkDangerousWeather = (weatherData: WeatherData) => {
   return warnings;
 };
 
+//4.2: Ứng dụng gửi yêu cầu đến OpenWeatherMap API với thông tin địa điểm (tên thành phố hoặc tọa độ).
 export const fetchWeatherData = (city: string) => {
   const apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
   return fetch(apiURL)
