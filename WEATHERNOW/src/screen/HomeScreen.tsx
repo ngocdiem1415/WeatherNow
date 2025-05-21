@@ -13,6 +13,7 @@ export default function HomeScreen() {
     fetchWeather,
     resetData,
     translateWeatherDescription,
+    warnings,
   } = useWeatherLogic();
 
   return (
@@ -35,11 +36,12 @@ export default function HomeScreen() {
       </View>
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      {weather.cod === 200 &&
+      {weather?.cod === 200 &&
         <WeatherInfo
           weather={weather}
           iconURL={iconURL}
           translateWeatherDescription={translateWeatherDescription}
+          warnings={warnings}
         />
       }
     </View>

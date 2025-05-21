@@ -5,10 +5,11 @@ interface WeatherInfoProps {
   weather: any;
   iconURL: string;
   translateWeatherDescription: (description: string) => string;
+  warnings : string[];
 }
 
 //1.1.11 khởi tạo hàm chuyển đổi
-const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription }) => {
+const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription, warnings }) => {
   return (
     <View style={styles.weatherInfo}>
       <Text style={styles.cityName}>{`Tên thành phố: ${weather.name}`}</Text>
@@ -19,7 +20,16 @@ const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWe
       <Text style={styles.infoText}>{`Tốc độ gió: ${weather.wind.speed} km/h`}</Text>
       <Text style={styles.infoText}>{`Hướng gió: ${weather.wind.deg} độ`}</Text>
       <Text style={styles.infoText}>{`Mô tả thời tiết: ${translateWeatherDescription(weather.weather[0].description)}`}</Text>
-    </View>
+
+      {warnings && warnings.length > 0 && (
+        <View style={styles.warningBox}>
+          <Text style={styles.warningTitle}>⚠️ Cảnh báo thời tiết:</Text>
+          {warnings?.map((warn, idx) => (
+            <Text key={idx} style={styles.warningText}>{warn}</Text>
+          ))}
+        </View>
+      )}
+      </View>
   );
 };
 
@@ -55,6 +65,22 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 16,
     marginVertical: 2,
+  },
+   warningBox: {
+    backgroundColor: '#FFF3CD',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+    width: '100%',
+  },
+  warningTitle: {
+    fontWeight: 'bold',
+    color: '#856404',
+    marginBottom: 5,
+  },
+  warningText: {
+    color: '#856404',
+    fontSize: 14,
   },
 });
 
