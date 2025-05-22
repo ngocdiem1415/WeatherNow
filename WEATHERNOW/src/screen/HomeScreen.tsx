@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import useWeatherLogic from '../applogic/useWeatherLogic';
 import WeatherInfo from '../components/WeatherInfo';
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
   const {
     city,
     weather,
     errorMessage,
     iconURL,
-    validateCity, // Đổi từ handleCityChange thành validateCity
+    validateCity,
     fetchWeather,
     resetData,
     translateWeatherDescription,
@@ -23,67 +23,81 @@ export default function HomeScreen() {
 
       <TextInput
         style={styles.input}
-//1.1.2 Kiểm tra dữ liệu đã nhận
         onChangeText={validateCity}
         value={city}
         placeholder="Nhập tên thành phố"
       />
 
       <View style={styles.actions}>
-
         <Button title="Xem" onPress={fetchWeather} color="#007BFF" />
         <Button title="Xóa" onPress={resetData} color="#FF5733" />
+        <Button title="Cài đặt" onPress={() => navigation.navigate('Cài đặt')} />
       </View>
+
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      {weather?.cod === 200 &&
+      {weather?.cod === 200 && (
         <WeatherInfo
           weather={weather}
           iconURL={iconURL}
           translateWeatherDescription={translateWeatherDescription}
           warnings={warnings}
         />
-      }
+      )}
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E0D8EA',
+    backgroundColor: '#F5FCFF',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    justifyContent: 'flex-start',
+    padding: 24,
+    paddingTop: 48,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 28,
+    fontWeight: '800',
+    marginBottom: 16,
+    color: '#1A237E',
+    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 18,
-    marginBottom: 5,
+    fontSize: 16,
+    marginBottom: 24,
+    color: '#3F51B5',
+    textAlign: 'center',
   },
   input: {
-    borderColor: '#007BFF',
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 10,
+    borderColor: '#3F51B5',
+    borderWidth: 1.5,
+    padding: 14,
+    marginVertical: 16,
     width: '100%',
-    borderRadius: 8,
-    backgroundColor: '#fff',
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    fontSize: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 16,
+    marginBottom: 24,
+    gap: 12,
   },
   error: {
-    color: 'red',
-    fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#D32F2F',
+    fontWeight: '600',
+    marginBottom: 16,
+    fontSize: 14,
+    textAlign: 'center',
+    paddingHorizontal: 20,
   },
-})
+});
