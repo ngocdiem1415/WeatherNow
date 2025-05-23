@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
     padding: 20,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 0,
     width: '100%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -48,18 +48,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cityName: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   temp: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
     marginBottom: 5,
   },
   icon: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     marginVertical: 10,
   },
   infoText: {
