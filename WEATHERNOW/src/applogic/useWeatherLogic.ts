@@ -146,3 +146,4 @@ const checkDangerousWeather = (data: WeatherData): string[] => {
 
   return warnings;
 };
+

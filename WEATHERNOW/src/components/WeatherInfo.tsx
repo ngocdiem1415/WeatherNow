@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   icon: {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     marginVertical: 10,
   },
   infoText: {

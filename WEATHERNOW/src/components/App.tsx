@@ -8,6 +8,7 @@ import { loadSettings } from '../utils/Storage';
 import HomeScreen from '../screen/HomeScreen';
 import SettingsScreen from '../screen/SettingsScreen';
 import { translateWeatherDescription } from '../services/NotificationService';
+import ForecastScreen from '../screen/ForecastScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +95,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Trang chính">
         <Stack.Screen name="Trang chính" component={HomeScreen} />
         <Stack.Screen name="Cài đặt" component={SettingsScreen} />
+        <Stack.Screen name="Dự báo" component={ForecastScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
