@@ -32,6 +32,7 @@ export default function HomeScreen({ navigation }: any) {
         <Button title="Xem" onPress={fetchWeather} color="#007BFF" />
         <Button title="Xóa" onPress={resetData} color="#FF5733" />
         <Button title="Cài đặt" onPress={() => navigation.navigate('Cài đặt')} />
+        <Button title="Dự báo" onPress={() => navigation.navigate('Dự báo', { city })} color="#28A745"/>
       </View>
 
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
