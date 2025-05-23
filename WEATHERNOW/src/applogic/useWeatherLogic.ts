@@ -61,7 +61,7 @@ export default function useWeatherLogic() {
     //1.1.5.	useWeatherLogic gọi hàm fetchWeatherData của WeatherService
     fetchWeatherData(city)
       .then((data) => {
-        //1.1.9.	useWeatherLogic gán giá trị vào state
+        //1.1.9.	useWeatherLogic gán dữ liệu thời tiết và cảnh báo vào state.
         setWeather(data);
 
         // Gọi logic kiểm tra cảnh báo

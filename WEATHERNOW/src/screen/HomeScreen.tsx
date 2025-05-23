@@ -38,13 +38,13 @@ export default function HomeScreen({ navigation }: any) {
 
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      //1.1.10.	 HomeScreen gọi render giao diện WeatherInfo
+      //1.1.10.	HomeScreen nhận dữ liệu từ state và gọi render component WeatherInfo
       {weather?.cod === 200 && (
-        //1.1.10.	 HomeScreen gọi render giao diện WeatherInfo
+        //1.1.11.	HomeScreen truyền props gồm weather, iconURL, warnings và 
+        // hàm translateWeatherDescription vào WeatherInfo.
         <WeatherInfo
           weather={weather}
           iconURL={iconURL}
-          //1.1.12.	 HomeScreen gọi hàm chuyển đổi description trong useWeatherLogic
           translateWeatherDescription={translateWeatherDescription}
           warnings={warnings}
         />
