@@ -8,7 +8,6 @@ interface WeatherInfoProps {
   warnings : string[];
 }
 
-//1.1.11 khởi tạo hàm chuyển đổi
 const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription, warnings }) => {
   return (
     <View style={styles.weatherInfo}>
