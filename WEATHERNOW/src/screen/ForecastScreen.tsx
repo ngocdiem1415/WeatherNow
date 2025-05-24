@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { fetchForecastData } from '../services/ForecastService';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+
 
 const translateWeatherDescription = (desc: string) => {
   const map: Record<string, string> = {
@@ -37,12 +39,31 @@ export default function ForecastScreen({ route }: any) {
       <Text style={styles.title}>Dự báo 5 ngày tới tại {city}</Text>
       {forecast.map((item, index) => (
         <View key={index} style={styles.card}>
-          <Text>{item.dt_txt}</Text>
-          <Text>Nhiệt độ: {item.main.temp}°C</Text>
-          <Text>Độ ẩm: {item.main.humidity}%</Text>
-          <Text>Tốc độ gió: {item.wind.speed} km/h</Text>
-          <Text>Hướng gió: {item.wind.deg}°</Text>
-          <Text>Mô tả thời tiết: {translateWeatherDescription(item.weather[0].description)}</Text>
+          <Text style={styles.dateText}>{item.dt_txt}</Text>
+          <View style={styles.row}>
+            <MaterialCommunityIcons name="thermometer" size={20} color="#0277bd" style={styles.icon} />
+            <Text style={styles.cardText}>Nhiệt độ: {item.main.temp}°C</Text>
+          </View>
+
+          <View style={styles.row}>
+            <MaterialCommunityIcons name="water-percent" size={20} color="#0277bd" style={styles.icon} />
+            <Text style={styles.cardText}>Độ ẩm: {item.main.humidity}%</Text>
+          </View>
+
+          <View style={styles.row}>
+            <FontAwesome5 name="wind" size={18} color="#0277bd" style={styles.icon} />
+            <Text style={styles.cardText}>Tốc độ gió: {item.wind.speed} km/h</Text>
+          </View>
+
+          <View style={styles.row}>
+            <MaterialCommunityIcons name="compass" size={20} color="#0277bd" style={styles.icon} />
+            <Text style={styles.cardText}>Hướng gió: {item.wind.deg}°</Text>
+          </View>
+
+          <View style={styles.row}>
+            <MaterialCommunityIcons name="weather-partly-cloudy" size={20} color="#0277bd" style={styles.icon} />
+            <Text style={styles.cardText}>Mô tả thời tiết: {translateWeatherDescription(item.weather[0].description)}</Text>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -51,20 +72,54 @@ export default function ForecastScreen({ route }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: '#F5FCFF',
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+    backgroundColor: '#e0f7fa',
+    minHeight: '100%',
+    alignItems: 'center',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    fontSize: 26,
+    fontWeight: '700',
+    marginBottom: 24,
+    color: '#01579b',
     textAlign: 'center',
+    letterSpacing: 1.2,
   },
   card: {
     backgroundColor: '#ffffff',
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 12,
-    elevation: 2,
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+    borderRadius: 18,
+    marginBottom: 20,
+    width: '100%',
+    maxWidth: 420,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
+    borderLeftWidth: 6,
+    borderLeftColor: '#4fc3f7',
+  },
+  dateText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#0277bd',
+    marginBottom: 10,
+  },
+  cardText: {
+    fontSize: 15.5,
+    color: '#37474f',
+    marginBottom: 6,
+    lineHeight: 22,
+  },
+  row: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 6,
+},
+  icon: {
+    marginRight: 8,
   },
 });
