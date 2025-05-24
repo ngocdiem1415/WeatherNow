@@ -17,6 +17,7 @@ export default function HomeScreen({ navigation }: any) {
   } = useWeatherLogic();
 
   return (
+    //
     <View style={styles.container}>
       <Text style={styles.title}>Ứng dụng Dự báo thời tiết!</Text>
       <Text style={styles.subtitle}>Mời bạn nhập tên thành phố:</Text>
