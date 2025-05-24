@@ -15,6 +15,7 @@ export default function useWeatherLogic() {
   const iconURL = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
   // 3. Hàm chuyển đổi mô tả thời tiết sang tiếng Việt
+  //1.1.12.	HomeScreen gọi hàm chuyển đổi dữ liệu sang tiếng việt của WeatherInfo
   const translateWeatherDescription = (description: string) => {
     const translations: Record<string, string> = {
       "clear sky": "trời quang đãng",
@@ -41,6 +42,7 @@ export default function useWeatherLogic() {
   };
 
   // 5. Hàm kiểm tra thành phố đầu vào
+  //1.1.2.	Homescreen gọi useWeatherLogic kiểm tra dữ liệu đã nhận vào
   const validateCity = (name: string) => {
   setCity(name); 
   const trimmed = name.trim();
@@ -56,8 +58,10 @@ export default function useWeatherLogic() {
 
   // 6. Gọi API thời tiết và xử lý dữ liệu + cảnh báo
   const fetchWeather = () => {
+    //1.1.5.	useWeatherLogic gọi hàm fetchWeatherData của WeatherService
     fetchWeatherData(city)
       .then((data) => {
+        //1.1.9.	useWeatherLogic gán dữ liệu thời tiết và cảnh báo vào state.
         setWeather(data);
 
         // Gọi logic kiểm tra cảnh báo
@@ -69,9 +73,13 @@ export default function useWeatherLogic() {
 
         setErrorMessage('');
       })
-      .catch(() => {
-        setErrorMessage('Đã xảy ra lỗi! Vui lòng thử lại.');
-      });
+      .catch((error) => {
+      if (error.message === 'Network request failed') {
+        setErrorMessage('Không có kết nối mạng! Vui lòng kiểm tra kết nối Internet.');
+      } else {
+        setErrorMessage('Tên thành phố không hợp lệ! Vui lòng thử lại.');
+      }
+    });
   };
 
   // 7. Reset toàn bộ dữ liệu
@@ -146,3 +154,4 @@ const checkDangerousWeather = (data: WeatherData): string[] => {
 
   return warnings;
 };
+

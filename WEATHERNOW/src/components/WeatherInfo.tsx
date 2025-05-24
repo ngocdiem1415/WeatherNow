@@ -7,8 +7,8 @@ interface WeatherInfoProps {
   translateWeatherDescription: (description: string) => string;
   warnings : string[];
 }
-
-//1.1.11 khởi tạo hàm chuyển đổi
+//1.1.12.	Component WeatherInfo nhận các props và 
+// hiển thị thông tin chi tiết về thời tiết, sử dụng hàm chuyển đổi mô tả sang tiếng Việt.
 const WeatherInfo: React.FC<WeatherInfoProps> = ({ weather, iconURL, translateWeatherDescription, warnings }) => {
   return (
     <View style={styles.weatherInfo}>
