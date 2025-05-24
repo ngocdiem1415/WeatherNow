@@ -29,6 +29,7 @@ export default function HomeScreen({ navigation }: any) {
       />
 
       <View style={styles.actions}>
+      //1.1.4.	Homescreen gọi hàm fecthWeather của useWeatherLogic 
         <Button title="Xem" onPress={fetchWeather} color="#007BFF" />
         <Button title="Xóa" onPress={resetData} color="#FF5733" />
         <Button title="Cài đặt" onPress={() => navigation.navigate('Cài đặt')} />
@@ -37,7 +38,10 @@ export default function HomeScreen({ navigation }: any) {
 
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
+      //1.1.10.	HomeScreen nhận dữ liệu từ state và gọi render component WeatherInfo
       {weather?.cod === 200 && (
+        //1.1.11.	HomeScreen truyền props gồm weather, iconURL, warnings và 
+        // hàm translateWeatherDescription vào WeatherInfo.
         <WeatherInfo
           weather={weather}
           iconURL={iconURL}
