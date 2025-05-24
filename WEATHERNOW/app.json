@@ -19,19 +19,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },"permissions": [
+      },
+      "permissions": [
         "android.permission.RECEIVE_BOOT_COMPLETED",
         "android.permission.WAKE_LOCK"
-      ]
-    }, "plugins": [
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/notification-icon.png",
-          "color": "#ffffff",
-          "sounds": ["./assets/notification-sound.wav"]
-        }
       ],
+      "package": "com.test.weathernow"
+    },
+    "plugins": [
+      "expo-notifications",
       [
         "expo-background-fetch",
         {
@@ -41,9 +37,13 @@
         }
       ]
     ],
-    
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2ebf3034-703e-42f7-ba8f-301f3b3077ba"
+      }
     }
   }
 }
